@@ -20,7 +20,7 @@
 ```The problem is that we need to de-multiplex the sequencing outputs. We will have to figure out whether the indexes are dual-matched, hopped, or unknown.```
 2. Describe output:
 ```The output is 48 fastq files with modified headers that include the dual-matched headers. We will also have two files where the headers contain unkown indexes. Finally, we will have have two files that contain headers with the index-hopped indexes. So in total, there will be 52 fastq files. ```
-3. Upload your [4 input FASTQ files](/projects/bgmp/shared/2017_sequencing) and your [>=6 expected output FASTQ files](/projects/bgmp/roel/bioinfo/Bi622/Demultiplex/Assignment-the-first).
+3. Upload your [4 input FASTQ files](../TEST-input_FASTQ/) and your [>=6 expected output FASTQ files](../TEST-output_FASTQ/).
 4. 
 ```
 import argparse
