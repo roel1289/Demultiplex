@@ -11,6 +11,7 @@ def get_args():
     parser = argparse.ArgumentParser(description="A program to hold input + output file name")
     parser.add_argument("-f", "--filename", help="Specify the input filename.", type = str)
     parser.add_argument("-o", "--output", help="Specify output filename.", type = str)
+    parser.add_argument("-l", "--readlength", help="Specify read length, either 101 or 8.", type = int)
     return parser.parse_args()
 
 args = get_args()
@@ -23,7 +24,7 @@ def init_list(lst: list, value: float=0.0) -> list:
     with 101 values of 0.0.'''
     
     i = 0                               #start counter at 0
-    while i < 101:                      #while it is true that i is less than 101
+    while i < args.readlength:                      #while it is true that i is less than 101
     
         lst.append(value)               #append the value(0.0) to list
         i+=1                            #continue incrementing the list (and will stop at 100)
@@ -40,7 +41,7 @@ def populate_list(file: str) -> tuple[list, int]:
     num_lines = 0
 
 #read in file and create out file
-    with gzip.open(file,"r") as fastqFile:                  #, open(args.output, "w") as out_file:
+    with gzip.open(file,"rt") as fastqFile:                  #, open(args.output, "w") as out_file:
         i = 0   #counter called "count" that tracks number of lines in file
         for line in fastqFile:
             num_lines += 1
@@ -58,10 +59,10 @@ my_list, num_lines = populate_list(file)
 
 # print(f'Base Pair\tMean Quality Score')
 
-# for base in range(len(my_list)):
-#     my_list[base] = my_list[base] / (num_lines/4)
+for base in range(len(my_list)):
+    my_list[base] = my_list[base] / (num_lines/4)
     
-#     print(f'{base}\t{my_list[base]}')
+    print(f'{base}\t{my_list[base]}')
 
 
 import matplotlib.pyplot as plt
@@ -70,7 +71,7 @@ plt.bar(range(len(my_list)), my_list )
 plt.xlabel('Nucleotide')
 plt.ylabel('Mean Quality Score')
 plt.title('Mean Quality Score for each Nucleotide location')
-plt.savefig("outputHist.png")
-plt.show()
+plt.savefig(args.output)
 
-#test: ./part1PythonScript.py -f ../TEST-input_FASTQ/R1test.fq -o OUTtest.txt
+#test: ./part1PythonScript.py -f ../TEST-input_FASTQ/R1test.fq -o OUTtest.txt -l 101
+#test: ./part1PythonScript.py -f ../TEST-input_FASTQ/R2test.fq -o OUTTESTTEST.png -l 8
