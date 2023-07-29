@@ -11,9 +11,10 @@
 | 1294_S1_L008_R4_001.fastq.gz | read2 | 101 | Phred+33 |
 
 2. Per-base NT distribution
-    1. Use markdown to insert your 4 histograms here.
-    2. **YOUR ANSWER HERE**
-    3. **YOUR ANSWER HERE**
+    1. ![](./R1outHist.png)
+    2. ![](./R2outHist.png)
+    3. ![](./R3outHist.png)
+    4. ![](./R4outHist.png)
     
 ## Part 2
 1. Define the problem:
