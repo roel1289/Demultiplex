@@ -59,3 +59,36 @@ Command exited with non-zero status 1
         ...
         Exit status: 1
 ```
+
+Realized my open statement has to be in this format with gzip
+```gzip.open(file, "rt") as ___```
+
+Also realized that I had avg. loop commented out, so I am cancelling job and starting again
+```$ scancel 23617```
+
+Now ran it again with better argparse parameters, to take read length into account (101 or 8)
+Located in ```/projects/bgmp/roel/bioinfo/Bi622/Demultiplex/Assignment-the-first/part1SlurmScript.sh```
+
+Ran again using the following 4 scripts (ran separate times for separate jobs):
+```
+/usr/bin/time -v ./part1PythonScript.py -f /projects/bgmp/shared/2017_sequencing/1294_S1_L008_R1_001.fastq.gz -l 101
+/usr/bin/time -v ./part1PythonScript.py -f /projects/bgmp/shared/2017_sequencing/1294_S1_L008_R2_001.fastq.gz -l 8
+/usr/bin/time -v ./part1PythonScript.py -f /projects/bgmp/shared/2017_sequencing/1294_S1_L008_R3_001.fastq.gz -l 8
+/usr/bin/time -v ./part1PythonScript.py -f /projects/bgmp/shared/2017_sequencing/1294_S1_L008_R4_001.fastq.gz -l 101
+```
+Seemed to have worked and all exit statuses are 0
+
+
+Now i am seeing how many index reads have "N"
+```
+zcat 1294_S1_L008_R2_001.fastq.gz | sed -n '2~4p' | grep "N" | wc -l
+zcat 1294_S1_L008_R3_001.fastq.gz | sed -n '2~4p' | grep "N" | wc -l
+```
+lines for R2: 3976613
+lines for R3: 3328051
+
+Percentage of "N" R1:  3976613 / 363246735 = 0.010947415673261317
+Percentage of "N" R2: 3328051 / 363246735 = 0.009161957092332846
+
+
+Divide number of lines with "N" by total number of reads to get % of lines with "N"
