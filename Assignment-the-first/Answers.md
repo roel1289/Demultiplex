@@ -12,9 +12,14 @@
 
 2. Per-base NT distribution
     1. ![](./R1outHist.png)
-    2. ![](./R2outHist.png)
-    3. ![](./R3outHist.png)
-    4. ![](./R4outHist.png)
+     ![](./R2outHist.png)
+     ![](./R3outHist.png)
+     ![](./R4outHist.png)
+    2. For biological read pairs, a good cutoff is a quality score of 25. For index reads a good cutoff is also a quality score of 25. This cutoff will get rid of the quality scores that we know are incorrect, but will include most of the natural variation in quality score. When looking at my graphs, the there were no values lower than 30; however, since the data depicts means, there may be small amounts of quality scores lower than that value. So, a quality score cutoff of 25 should get rid of only the outliers. 
+    3. 
+        1. R2 indexes with "N": 3976613
+        2. R3 indexes with "N": 3328051
+
     
 ## Part 2
 1. Define the problem:
