@@ -44,7 +44,7 @@ def readfour(fh):
     plus=fh.readline().strip()
     qual=fh.readline().strip()
 
-    return header, seq, plus, qual
+    return [header, seq, plus, qual]
 
 #known indexes
 #dictiionary includes indexes and the value is the occurences
@@ -59,26 +59,105 @@ unknownDict = dict()
 instancesDict = dict()
 instancesDict = {"matched":0, "hopped":0, "unknown":0}
 
+#all possible index pairs
+possibleIndexPairsDict = dict()
+
+
+
+def append_header(index1, index2, header): 
+    '''This function will create a header that adds the indexes to the header'''
+    new_header=header+" "+index1+"-"+index2
+    return new_header
+
+
+#open each of the files: 
+unknown_file1=open("unknown_read1.fq","w")
+unknown_file4=open("unknown_read2.fq","w")
+matched_file1=open("matched_read1.fq","w")
+matched_file4=open("matched_read2.fq","w")
+hopped_file1=open("hopped_read1.fq","w")
+hopped_file4=open("hopped_read2.fq","w")
 
 
 #opening files
 with open(args.filename1, "r") as R1, open(args.filename2, "r") as R2, open(args.filename3, "r") as R3, open(args.filename4, "r") as R4:
     while True: 
         record_r1=readfour(R1)
-        if record_r1 == ("","","",""):
+        if record_r1 == ["","","",""]:
             break #break when there is an empty tuple
         record_r2=readfour(R2)
         record_r3=readfour(R3)
         record_r4=readfour(R4)
         reverse_index=rev_comp_DNA(record_r3[1])
         #print(reverse_index)
-        new_header =" "+record_r1[0]+" "+record_r2[1]+"-"+reverse_index
-        print(new_header)
+        #new_header =" "+record_r1[0]+" "+record_r2[1]+"-"+reverse_index
+        #print(new_header)
+
+        record_r1[0]=append_header(record_r2[1], reverse_index, record_r1[0])
+        record_r4[0]=append_header(record_r2[1], reverse_index, record_r4[0])
+        #print(record_r1[0], record_r4[0])
+
+
+
+        #record_r1[0],record_r4[0] = new_header,new_header
+        index=record_r2[1]
+        #print(index)
+
+        #key = record_r1[0].split(" ")[2]
+        key = (index+'-'+reverse_index)
 
 
 
 
+        #go through each case
+        if "N" in index or "N" in reverse_index:
+            instancesDict["unknown"]+=1
+            unknown_file1.write(record_r1[0]+'\n'+record_r1[1]+'\n'+record_r1[2]+'\n'+record_r1[3]+'\n')
+            unknown_file4.write(record_r4[0]+'\n'+record_r4[1]+'\n'+record_r4[2]+'\n'+record_r4[3]+'\n')
+            #possibleIndexPairsDict[record_r1[2]] +=1
+        elif index not in knownDict or reverse_index not in knownDict:
+            instancesDict["unknown"]+=1
+            unknown_file1.write(record_r1[0]+'\n'+record_r1[1]+'\n'+record_r1[2]+'\n'+record_r1[3]+'\n')
+            unknown_file4.write(record_r4[0]+'\n'+record_r4[1]+'\n'+record_r4[2]+'\n'+record_r4[3]+'\n')
+        elif index in knownDict and index== reverse_index:
+            instancesDict["matched"]+=1
+            matched_file1.write(record_r1[0]+'\n'+record_r1[1]+'\n'+record_r1[2]+'\n'+record_r1[3]+'\n')
+            matched_file4.write(record_r4[0]+'\n'+record_r4[1]+'\n'+record_r4[2]+'\n'+record_r4[3]+'\n')
+            if key in possibleIndexPairsDict:
+                possibleIndexPairsDict[key] += 1
+            else: 
+                possibleIndexPairsDict[key] = 1
+        elif index in knownDict and reverse_index in knownDict and index!=reverse_index:
+            instancesDict["hopped"]+=1
+            hopped_file1.write(record_r1[0]+'\n'+record_r1[1]+'\n'+record_r1[2]+'\n'+record_r1[3]+'\n')
+            hopped_file4.write(record_r4[0]+'\n'+record_r4[1]+'\n'+record_r4[2]+'\n'+record_r4[3]+'\n')
+            if key in possibleIndexPairsDict:
+                possibleIndexPairsDict[key] += 1
+            else: 
+                possibleIndexPairsDict[key] = 1
+        
+        
+            
+            # print(key)
+            # if key in possibleIndexPairsDict:
+            #     possibleIndexPairsDict[key] += 1
+            # else: 
+            #     possibleIndexPairsDict[key] = 1
+    print(possibleIndexPairsDict)
+    
 
+
+
+    # print(possibleIndexPairsDict)
+    # print(instancesDict)
+    
+#close files too
+unknown_file1.close()
+unknown_file4.close()
+matched_file1.close()
+matched_file4.close()
+hopped_file1.close()
+hopped_file4.close()
 
 
 
