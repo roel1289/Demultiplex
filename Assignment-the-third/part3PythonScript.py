@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 
-#import things:
 import argparse
 import bioinfo
 import gzip 
@@ -18,7 +17,6 @@ def get_args():
 args = get_args()
 
 
-
 ###Beginning of func to return rev comp of DNA strand
 #key = forward strand nucl
 #value = rev complement nucl
@@ -31,7 +29,7 @@ def rev_comp_DNA(DNA:str) -> str:
         new_seq += my_dict[base]
     return(new_seq[::-1])
 
-#setting up way to read lines and strip one record at a time
+#setting up way to read and strip lines -- one record at a time
 def readfour(fh):
     '''Sequence to run through file four lines at a time. Returns tuple-- each record is its own tuple.'''
     header=fh.readline().strip()
@@ -64,7 +62,8 @@ def append_header(index1, index2, header):
     return new_header
 
 
-#open each of the files: 
+###open each of the files: 
+#note: opened matched files below to keep track of the combination of names
 unknown_file1=open("output/unknown_R1.fq","w")
 unknown_file4=open("output/unknown_R2.fq","w")
 # matched_file1=open("matched_read1.fq","w")
@@ -89,22 +88,20 @@ with open("./indexes.txt", "r") as indexList:
 
 #creating a total reads counter
 total = 0
-#opening files
-with open(args.filename1, "rt") as R1, open(args.filename2, "rt") as R2, open(args.filename3, "rt") as R3, open(args.filename4, "rt") as R4:
+#opening files. They are zipped, so we use gzip.open to open (need to close afterwards too)
+with gzip.open(args.filename1, "rt") as R1, gzip.open(args.filename2, "rt") as R2, gzip.open(args.filename3, "rt") as R3, gzip.open(args.filename4, "rt") as R4:
     
     while True: 
         record_r1=readfour(R1)
         if record_r1 == ["","","",""]:
-            break #break when there is an empty tuple
+            break #break when there is an empty set
         record_r2=readfour(R2)
         record_r3=readfour(R3)
         record_r4=readfour(R4)
         total +=1
         reverse_index=rev_comp_DNA(record_r3[1])
-        #print(reverse_index)
-        #new_header =" "+record_r1[0]+" "+record_r2[1]+"-"+reverse_index
-        #print(new_header)
-
+        
+        #recreating the headers of the files
         record_r1[0]=append_header(record_r2[1], reverse_index, record_r1[0])
         record_r4[0]=append_header(record_r2[1], reverse_index, record_r4[0])
         #print(record_r1[0], record_r4[0])
@@ -119,8 +116,6 @@ with open(args.filename1, "rt") as R1, open(args.filename2, "rt") as R2, open(ar
         key = (index+'-'+reverse_index)
 
         
-
-
         #go through each case
         if "N" in index or "N" in reverse_index:
             instancesDict["unknown"]+=1
@@ -138,6 +133,7 @@ with open(args.filename1, "rt") as R1, open(args.filename2, "rt") as R2, open(ar
             # matched_file4.write(record_r4[0]+'\n'+record_r4[1]+'\n'+record_r4[2]+'\n'+record_r4[3]+'\n')
             namingMatchedDict[index][0].write(record_r1[0]+'\n'+record_r1[1]+'\n'+record_r1[2]+'\n'+record_r1[3]+'\n')
             namingMatchedDict[index][1].write(record_r4[0]+'\n'+record_r4[1]+'\n'+record_r4[2]+'\n'+record_r4[3]+'\n')
+            #iterate both dictionaries
             if key in possibleIndexPairsDict:
                 possibleIndexPairsDict[key] += 1
             else: 
@@ -150,6 +146,7 @@ with open(args.filename1, "rt") as R1, open(args.filename2, "rt") as R2, open(ar
             instancesDict["hopped"]+=1
             hopped_file1.write(record_r1[0]+'\n'+record_r1[1]+'\n'+record_r1[2]+'\n'+record_r1[3]+'\n')
             hopped_file4.write(record_r4[0]+'\n'+record_r4[1]+'\n'+record_r4[2]+'\n'+record_r4[3]+'\n')
+            #iterate both dictionaries
             if key in possibleIndexPairsDict:
                 possibleIndexPairsDict[key] += 1
             else: 
@@ -178,23 +175,22 @@ index_hopped_freq = dict()
 totalMatched = sum(matchedDict.values())
 totalHopped = sum(hoppedDict.values())
 
+#print out all possible index combinations and their occurrences
 print(f'Index Pair\tOccurrences')
 for key in possibleIndexPairsDict:
     print(key, possibleIndexPairsDict[key], sep = '\t')
 
-
+#print out occurrences of each type (matched, hopped, or unknown)
 print(f'Type\tOccurences')
 for key in instancesDict:
     print(key, instancesDict[key], sep = '\t')
 
-
-
-print(f'occurrences\tpercentage in matched pairs\tpercerntage in total records')
+print(f'Occurrences\tPercentage in matched pairs\tPercerntage in total records')
 for key in matchedDict:
     #index_matched_freq[key] = (matchedDict[key],matchedDict[key]/totalMatched*100,matchedDict[key]/total*100)
     print(matchedDict[key],matchedDict[key]/totalMatched*100,matchedDict[key]/total*100, sep="\t")
 
-print(f'occurrences\tpercentage in hopped pairs\tpercerntage in total records')
+print(f'Occurrences\tPercentage in hopped pairs\tPercerntage in total records')
 for key in hoppedDict:
     #index_hopped_freq[key] = (hoppedDict[key],hoppedDict[key]/totalMatched*100,hoppedDict[key]/total*100)
     print(hoppedDict[key],hoppedDict[key]/totalMatched*100,hoppedDict[key]/total*100, sep='\t')
