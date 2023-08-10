@@ -1,5 +1,19 @@
 # Demultiplexing Project Results
 
+## Report
+I chose to filter the data by removing all "N" values. This is because I want to keep all levels of cutoffs, just not the "N"s.   
+By chosing a different cutoff, I might be removing valuable information.   
+
+## Occurences of each type to index
+
+|Type|Occurences|Percentage|
+|---|---|---|
+|matched|331755033|91.33|
+hopped|707740|0.19
+unknown|30783962|8.47
+
+
+
 ## Percentage of mapped pairs
 
 | Index | Occurrences | Percentage in matched pairs | Percerntage in total records |
@@ -585,14 +599,6 @@ TCGACAAG-CGGTAATC|56|1.6879924772686114e-05|1.5416518471941665e-05
 GCTACTCT-CACTTCAC|96|2.8937013896033342e-05|2.6428317380471427e-05
 CACTTCAC-TCGACAAG|67|2.0195624281606602e-05|1.844476317178735e-05
 TCGACAAG-CACTTCAC|35|1.0549952982928822e-05|9.635324044963543e-06
-
-## Occurences of each type to index
-
-|Type|Occurences|
-|---|---|
-|matched|331755033|
-hopped|707740
-unknown|30783962
 
 
 ## Occurence of each index swap
