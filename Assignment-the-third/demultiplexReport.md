@@ -19,6 +19,6 @@ One interesting piece of data was the index matching pair TACCGGAT-TACCGGAT. Thi
 This means that a large amount of data came from a similar location. 
 
 ## Overall amount of index swapping
-Found in [Final Results](https://github.com/roel1289/Demultiplex/blob/master/Assignment-the-third/finalResults.md)
+Found in [Final Results](https://github.com/roel1289/Demultiplex/blob/master/Assignment-the-third/finalResults.md)  
 In this file, my table named, "Percentage of Hopped Pair" describes each combination and how often they occured. In general, only 0.19%  
 of the records hopped which is a low amount and proves it is quality sequencing data.  
