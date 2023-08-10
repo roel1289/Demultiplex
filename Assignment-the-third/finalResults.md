@@ -1,9 +1,5 @@
 # Demultiplexing Project Results
 
-## Report
-I chose to filter the data by removing all "N" values. This is because I want to keep all levels of cutoffs, just not the "N"s.   
-By chosing a different cutoff, I might be removing valuable information.   
-
 ## Occurences of each type to index
 
 |Type|Occurences|Percentage|
