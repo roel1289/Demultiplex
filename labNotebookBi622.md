@@ -92,6 +92,10 @@ Percentage of "N" R2: 3328051 / 363246735 = 0.009161957092332846
 
 
 Divide number of lines with "N" by total number of reads to get % of lines with "N"
+### Part 2
+NOTE: part 2 was comparing pseudocode from other classmates.
+
+
 
 ### Part 3
 Created python script (part3PythonScript.py) and was ran using bash script (part3DemuSlurm.sh).  
