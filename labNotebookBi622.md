@@ -92,3 +92,32 @@ Percentage of "N" R2: 3328051 / 363246735 = 0.009161957092332846
 
 
 Divide number of lines with "N" by total number of reads to get % of lines with "N"
+
+### Part 3
+Created python script (part3PythonScript.py) and was ran using bash script (part3DemuSlurm.sh).  
+Results form slurm script:
+```
+ Command being timed: "./part3PythonScript.py -f1 /projects/bgmp/shared/2017_sequencing/1294_S1_L008_R1_001.fastq.gz -f2 /projects/bgmp/shared/2017_sequencing/1294_S1_L008_R2_001.fastq.gz -f3 /projects/bgmp/shared/2017_sequencing/1294_S1_L008_R3_001.fastq.gz -f4 /projects/bgmp/shared/2017_sequencing/1294_S1_L008_R4_001.fastq.gz"
+        User time (seconds): 3267.72
+        System time (seconds): 67.58
+        Percent of CPU this job got: 69%
+        Elapsed (wall clock) time (h:mm:ss or m:ss): 1:20:22
+        Average shared text size (kbytes): 0
+        Average unshared data size (kbytes): 0
+        Average stack size (kbytes): 0
+        Average total size (kbytes): 0
+        Maximum resident set size (kbytes): 248444
+        Average resident set size (kbytes): 0
+        Major (requiring I/O) page faults: 0
+        Minor (reclaiming a frame) page faults: 37656
+        Voluntary context switches: 58281
+        Involuntary context switches: 3878
+        Swaps: 0
+        File system inputs: 0
+        File system outputs: 0
+        Socket messages sent: 0
+        Socket messages received: 0
+        Signals delivered: 0
+        Page size (bytes): 4096
+        Exit status: 0
+```
